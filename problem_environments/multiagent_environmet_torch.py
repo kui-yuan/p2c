@@ -46,11 +46,10 @@ class MultiAgentEnvTorch:
         self.ant_anomaly_threshold = 48.083856548755605
         self.ant_anomaly_threshold_60 = 48.083856548755605
         self.ant_anomaly_threshold_100 = 129.3819963670962
-        if 'test_scripts' in os.getcwd() and ant_threshold_file is not None:
+        if ant_threshold_file is not None:
+            ant_threshold_file = ant_threshold_file if 'test_scripts' in os.getcwd() else os.path.join("test_scripts", ant_threshold_file)
             self.ant_anomaly_threshold_array = np.load(ant_threshold_file)
-        elif ant_threshold_file is not None:
-            self.ant_anomaly_threshold_array = np.load(os.path.join('test_scripts', ant_threshold_file))
-        self.ant_anomaly_threshold_60 = self.ant_anomaly_threshold_array[60]
+            self.ant_anomaly_threshold_60 = self.ant_anomaly_threshold_array[60]
         self.observing_phase_m = 50
         self.len_lstm_policy_input = 10
         if 'human' in env_name:
