@@ -269,8 +269,9 @@ class MCTS:
         plan = None
         save_trigger_state = False
 
-        if not os.path.exists('./test_results/trigger_actions_humanoid'):
-            os.mkdir('./test_results/trigger_actions_humanoid')
+        path = f'./test_results/trigger_actions_{"ant" if "ant" in self.environment.env_name else "humanoid"}/'
+        if not os.path.exists(path):
+            os.mkdir(path)
 
         self.n_iter = n_iter
         for iteration in range(n_iter):
