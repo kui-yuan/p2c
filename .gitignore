@@ -1,24 +1,27 @@
-# my test results
-test_results/
-tmp.txt
+# Python
 */__pycache__/
 *.pyc
+
+# IDE
 .idea/
-trigger_tdsr_log.txt
-trigger_tdsr_log_succeed.txt
+
+# Logs and Temporary Files
 *tmp.py
-*ant.txt
 connection_with_seed.txt
 disconnection.txt
+tmp.txt
 tmp_mobile.txt
 trigger_action_mobile.txt
 trigger_mobile_log.txt
-trigger_mobile_log_succeed_tmp.txt
 trigger_mobile_log_succeed.txt
-test_scripts/trojan_models_torch/mobile_env/effective_state
-/test_scripts/test_mcts_pkl.py
-/problem_environments/mobile_env_effective_near.py
-/problem_environments/mobile_env_effective_far.py
-/problem_environments/mobile_env_effective_normal.py
-/test_scripts/trojan_models_torch/Ant_models/
+trigger_mobile_log_succeed_tmp.txt
+trigger_tdsr_log.txt
+trigger_tdsr_log_succeed.txt
 
+# Specific Scripts and Models
+/problem_environments/mobile_env_effective_far.py
+/problem_environments/mobile_env_effective_near.py
+/problem_environments/mobile_env_effective_normal.py
+/test_scripts/test_mcts_pkl.py
+test_scripts/trojan_models_torch/mobile_env/effective_state
+test_results/
