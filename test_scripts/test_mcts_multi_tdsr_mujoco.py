@@ -120,7 +120,7 @@ def process_args(args):
     assert args.domain in {"multiagent_run-to-goal-human-torch", "multiagent_run-to-goal-ant-torch"}, "invalid domain"
     env = args.domain.split("-")[-2]
     args.problem_name = f"run-to-goal-{env}s-v0"
-    args.ant_threshold_file = f"parameters/ant_threshold/thresholds_0_to_100_{args.model_name.split('.')[0]}.npy"
+    args.ant_threshold_file = f"trojan_models_torch/ant_threshold/thresholds_0_to_100_{args.model_name.split('.')[0]}.npy"
     args.model_name = f"trojan_models_torch/{env}_models/{args.model_name}"
 
     args.mcts_iter = 1000
