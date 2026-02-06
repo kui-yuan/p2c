@@ -50,6 +50,11 @@ class MultiAgentEnvTorch:
             ant_threshold_file = ant_threshold_file if 'test_scripts' in os.getcwd() else os.path.join("test_scripts", ant_threshold_file)
             self.ant_anomaly_threshold_array = np.load(ant_threshold_file)
             self.ant_anomaly_threshold_60 = self.ant_anomaly_threshold_array[60]
+
+        self.ant_anomaly_threshold /= 1000
+        self.ant_anomaly_threshold_60 /= 1000
+        self.ant_anomaly_threshold_100 /= 1000
+
         self.observing_phase_m = 50
         self.len_lstm_policy_input = 10
         if 'human' in env_name:
@@ -171,7 +176,7 @@ class MultiAgentEnvTorch:
         next_state, r, d, _ = self.env.step(  # clipped_actions[0]
             ([action, oppo_action[0]]))
         # self.env.render()
-        one_step_reward = -r[1]
+        one_step_reward = 0 if not d[0] and not d[1] else -np.sign(r[1])
         # if reward_total > 700 and i > 25:
         #     self.found_trigger = True
         #     with open('tmp.txt', 'a') as f:
@@ -285,7 +290,8 @@ class MultiAgentEnvTorch:
             state_seq.append(obs[1])
             if len(state_seq) > self.len_lstm_policy_input:
                 state_seq.pop(0)
-            reward_total += -r[1]
+            one_step_reward = 0 if not d[0] and not d[1] else -np.sign(r[1])
+            reward_total += one_step_reward
             if 'human' in self.env_name:
                 if d[1] and reward_total > 0:
                     trojan_falling = True
@@ -381,9 +387,10 @@ class MultiAgentEnvTorch:
                 ([action, oppo_action[0]]))
             # self.env.render()
             obs = next_state
-            reward_total += -r[1]
+            one_step_reward = 0 if not d[0] and not d[1] else -np.sign(r[1])
+            reward_total += one_step_reward
             if self.observing_phase_m + len(trigger_action) > step > len(trigger_action):
-                observing_reward += -r[1]
+                observing_reward += one_step_reward
             # TODO tsne
             # if step < 60:
             #     observing_reward += -r[1]
