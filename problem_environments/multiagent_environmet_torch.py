@@ -13,6 +13,9 @@ import gym_compete
 import torch
 
 
+noise_std = 0.00
+
+
 class MultiAgentEnvTorch:
     def __init__(self, env_name='run-to-goal-humans-v0',
                  model_name="saved_models/human-to-go/trojan_model_128.h5", seed=0, ant_threshold_file=None):
@@ -171,7 +174,7 @@ class MultiAgentEnvTorch:
         next_state, r, d, _ = self.env.step(  # clipped_actions[0]
             ([action, oppo_action[0]]))
         # self.env.render()
-        one_step_reward = -r[1]
+        one_step_reward = -(r[1] + np.random.normal(loc=0, scale=noise_std))
         # if reward_total > 700 and i > 25:
         #     self.found_trigger = True
         #     with open('tmp.txt', 'a') as f:
@@ -285,7 +288,8 @@ class MultiAgentEnvTorch:
             state_seq.append(obs[1])
             if len(state_seq) > self.len_lstm_policy_input:
                 state_seq.pop(0)
-            reward_total += -r[1]
+            one_step_reward = -(r[1] + np.random.normal(loc=0, scale=noise_std))
+            reward_total += one_step_reward
             if 'human' in self.env_name:
                 if d[1] and reward_total > 0:
                     trojan_falling = True
@@ -381,9 +385,10 @@ class MultiAgentEnvTorch:
                 ([action, oppo_action[0]]))
             # self.env.render()
             obs = next_state
-            reward_total += -r[1]
+            one_step_reward = -(r[1] + np.random.normal(loc=0, scale=noise_std))
+            reward_total += one_step_reward
             if self.observing_phase_m + len(trigger_action) > step > len(trigger_action):
-                observing_reward += -r[1]
+                observing_reward += one_step_reward
             # TODO tsne
             # if step < 60:
             #     observing_reward += -r[1]
